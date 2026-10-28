@@ -1,18 +1,44 @@
+# stages:
+#   - stage: init
+#     displayName: INIT
+#     jobs:
+#       - job: init
+#         displayName: INIt
+#         steps:
+#           - task: TerraformInstaller@1
+#             inputs:
+#               terraformVersion: 'latest'
+#           - task: TerraformTask@5
+#             inputs:
+#               provider: 'azurerm'
+#               command: 'init'
+#               backendServiceArm: 'Aparna_Services'
+#               backendAzureRmStorageAccountName: 'aparnamishrastorage108'
+#               backendAzureRmContainerName: 'mishracontainer'
+#               backendAzureRmKey: 'mishra_terraform.tfstate'
+parameters:  
+  workingDir: ''
+  serviceConnection: ''
+  storageAccount: ''
+  containerName: ''
+  tfstateKey: ''
+
+
 stages:
-  - stage: init
-    displayName: INIT
-    jobs:
-      - job: init
-        displayName: INIt
-        steps:
-          - task: TerraformInstaller@1
-            inputs:
-              terraformVersion: 'latest'
-          - task: TerraformTask@5
-            inputs:
-              provider: 'azurerm'
-              command: 'init'
-              backendServiceArm: 'Aparna_Services'
-              backendAzureRmStorageAccountName: 'aparnamishrastorage108'
-              backendAzureRmContainerName: 'mishracontainer'
-              backendAzureRmKey: 'mishra_terraform.tfstate'
+ - stage: init_stage
+   jobs:
+     - job: initname
+       displayName: templateinit
+       steps:
+
+
+
+         - task: TerraformTask@5
+           inputs:
+             provider: 'azurerm'
+             command: 'init'
+             workingDirectory: ${{parameters.workingDir}}
+             backendServiceArm: ${{parameters.serviceConnection}}
+             backendAzureRmStorageAccountName: ${{parameters.storageAccount}}
+             backendAzureRmContainerName: ${{parameters.containerName}}
+             backendAzureRmKey: ${{pararameters.tfstateKey}}
